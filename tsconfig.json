@@ -1,4 +1,12 @@
 {
+  "compilerOptions": {
+    "baseUrl": ".",
+    "moduleResolution": "bundler",
+    "resolvePackageJsonImports": true,
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
