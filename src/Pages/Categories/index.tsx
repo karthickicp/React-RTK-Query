@@ -1,4 +1,8 @@
-import { useGetCategoriesQuery } from "../../api/categories";
+import { useState } from "react";
+import {
+  useDeleteCategoryMutation,
+  useGetCategoriesQuery,
+} from "../../api/categories";
 import { Button } from "../../components/ui/button";
 import {
   Table,
@@ -8,14 +12,26 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
+import { AddOrEditCategoryModal } from "./Modals/AddOrEditCategoryModal";
+import type { ICategories } from "../../types/categories/categories-reducer";
 
 export const CategoriesPage = () => {
   const { data: categories } = useGetCategoriesQuery();
+
+  const [deleteCategory] = useDeleteCategoryMutation();
+
+  const [selectedCategory, setSelectedCategory] = useState<ICategories | null>(
+    null,
+  );
+  const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false);
+
   return (
     <>
       <div className="m-4 flex justify-between items-center">
         <h1 className="text-2xl font-bold">Categories</h1>
-        <Button>Add Category</Button>
+        <Button onClick={() => setIsAddCategoryModalOpen(true)}>
+          Add Category
+        </Button>
       </div>
       {categories?.length ? (
         <Table>
@@ -32,8 +48,19 @@ export const CategoriesPage = () => {
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{category.name}</TableCell>
                 <TableCell>
-                  <Button>Edit</Button>
-                  <Button variant="outline" className={"ml-4"}>
+                  <Button
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setIsAddCategoryModalOpen(true);
+                    }}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className={"ml-4"}
+                    onClick={() => deleteCategory(category.id)}
+                  >
                     Delete
                   </Button>
                 </TableCell>
@@ -44,6 +71,15 @@ export const CategoriesPage = () => {
       ) : (
         <div>No Categories found</div>
       )}
+
+      <AddOrEditCategoryModal
+        isShowModal={isAddCategoryModalOpen}
+        onModalClose={() => {
+          setSelectedCategory(null);
+          setIsAddCategoryModalOpen(false);
+        }}
+        category={selectedCategory}
+      />
     </>
   );
 };

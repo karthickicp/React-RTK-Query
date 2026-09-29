@@ -81,7 +81,10 @@ export const Products = () => {
       )}
       <AddProductModal
         isShowModal={isAddModalOpen}
-        onModalClose={() => setIsAddModalOpen(false)}
+        onModalClose={() => {
+          setSelectedProduct(null);
+          setIsAddModalOpen(false);
+        }}
         product={selectedProduct}
       />
     </>

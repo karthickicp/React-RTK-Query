@@ -16,3 +16,7 @@ export const addProductSchema = zod.object({
     .number("Category is required")
     .nonoptional("Category is required"),
 });
+
+export const addCategorySchema = zod.object({
+  name: zod.string().trim().nonempty("Name is required"),
+});

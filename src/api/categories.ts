@@ -11,7 +11,10 @@ export const categoriesApi = createApi({
     getCategories: builder.query<ICategories[], void>({
       queryFn: async () => {
         const { data, error }: PostgrestSingleResponse<ICategories[]> =
-          await supabase.from("Categories").select("*");
+          await supabase
+            .from("Categories")
+            .select()
+            .order("id", { ascending: true });
         if (error) {
           return { error };
         }
@@ -46,10 +49,10 @@ export const categoriesApi = createApi({
       },
       invalidatesTags: ["categories"],
     }),
-    deleteCategory: builder.mutation<ICategories, ICategories>({
-      queryFn: async (category) => {
+    deleteCategory: builder.mutation({
+      queryFn: async (categoryId: number) => {
         const { data, error }: PostgrestSingleResponse<ICategories> =
-          await supabase.from("Categories").delete().eq("id", category.id);
+          await supabase.from("Categories").delete().eq("id", categoryId);
         if (error) {
           return { error };
         }
