@@ -20,7 +20,49 @@ export const categoriesApi = createApi({
       },
       providesTags: ["categories"],
     }),
+    createCategory: builder.mutation({
+      queryFn: async (category) => {
+        const { data, error }: PostgrestSingleResponse<ICategories> =
+          await supabase.from("Categories").insert(category);
+
+        if (error) {
+          return { error };
+        }
+        return { data };
+      },
+      invalidatesTags: ["categories"],
+    }),
+    updateCategory: builder.mutation({
+      queryFn: async (category) => {
+        const { data, error }: PostgrestSingleResponse<ICategories> =
+          await supabase
+            .from("Categories")
+            .update(category)
+            .eq("id", category.id);
+        if (error) {
+          return { error };
+        }
+        return { data };
+      },
+      invalidatesTags: ["categories"],
+    }),
+    deleteCategory: builder.mutation<ICategories, ICategories>({
+      queryFn: async (category) => {
+        const { data, error }: PostgrestSingleResponse<ICategories> =
+          await supabase.from("Categories").delete().eq("id", category.id);
+        if (error) {
+          return { error };
+        }
+        return { data };
+      },
+      invalidatesTags: ["categories"],
+    }),
   }),
 });
 
-export const { useGetCategoriesQuery } = categoriesApi;
+export const {
+  useGetCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} = categoriesApi;
