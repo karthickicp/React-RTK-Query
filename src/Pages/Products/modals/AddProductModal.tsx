@@ -99,7 +99,7 @@ export const AddProductModal = ({
     <Dialog open={isShowModal} onOpenChange={handleModalClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Product</DialogTitle>
+          <DialogTitle>{product?.id ? "Update" : "Add"} Product</DialogTitle>
         </DialogHeader>
         <form
           id="add-product-form"
