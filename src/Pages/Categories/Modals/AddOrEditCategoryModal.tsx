@@ -17,13 +17,13 @@ import {
 } from "../../../api/categories";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addCategorySchema } from "../../../helpers/validationSchema";
+import type { IAddOrEditCategoryModalProps } from "../../../types/categories/categories-ui";
 
 export const AddOrEditCategoryModal = ({
   isShowModal,
   onModalClose,
   category,
-}) => {
-  console.log(category, "category from add or edit category modal");
+}: IAddOrEditCategoryModalProps) => {
   const [createCategory] = useCreateCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
 
@@ -62,7 +62,9 @@ export const AddOrEditCategoryModal = ({
     <Dialog open={isShowModal} onOpenChange={handleModalClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{category ? "Edit" : "Add"} Category</DialogTitle>
+          <DialogTitle>
+            {category ? "Edit Category" : "Add Category"}
+          </DialogTitle>
         </DialogHeader>
 
         <form
@@ -101,7 +103,10 @@ export const AddOrEditCategoryModal = ({
         <DialogFooter>
           <DialogClose
             render={
-              <Button variant="outline" onClick={handleModalClose}>
+              <Button
+                variant="outline"
+                data-testid="add-category-cancel-button"
+              >
                 Cancel
               </Button>
             }

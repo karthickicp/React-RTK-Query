@@ -193,6 +193,7 @@ export const AddProductModal = ({
                     }
                     onValueChange={(value) => field.onChange(Number(value))}
                     data-invalid={fieldState.invalid}
+                    id="category_id"
                   >
                     <SelectTrigger className="w-45">
                       <SelectValue placeholder="Category" />
@@ -218,7 +219,7 @@ export const AddProductModal = ({
         <DialogFooter>
           <DialogClose
             render={
-              <Button variant="outline" onClick={handleModalClose}>
+              <Button variant="outline" data-testid="add-product-cancel-button">
                 Cancel
               </Button>
             }
